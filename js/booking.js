@@ -1,25 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('bookingForm');
-    const checkIn = document.getElementById('check_in');
-    const checkOut = document.getElementById('check_out');
+    const moduleIds = document.querySelectorAll('input[name="module_id"]');
     
-    // Set minimum date as today
-    const today = new Date().toISOString().split('T')[0];
-    checkIn.min = today;
-    
-    // Update checkout minimum date when checkin changes
-    checkIn.addEventListener('change', function() {
-        checkOut.min = checkIn.value;
-        if (checkOut.value && checkOut.value < checkIn.value) {
-            checkOut.value = checkIn.value;
-        }
-    });
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Directly redirect to confirmation page without checking availability
-        const formData = new FormData(form);
-        const params = new URLSearchParams(formData).toString();
-        window.location.href = 'index.php?option=com_whiteleafbooking&view=confirmation&' + params;
+    moduleIds.forEach(function(moduleIdInput) {
+        const moduleId = moduleIdInput.value;
+        const form = document.getElementById('bookingForm' + moduleId);
+        const checkIn = document.getElementById('check_in_' + moduleId);
+        const checkOut = document.getElementById('check_out_' + moduleId);
+        
+        // Set minimum date as today
+        const today = new Date().toISOString().split('T')[0];
+        checkIn.min = today;
+        
+        // Update checkout minimum date when checkin changes
+        checkIn.addEventListener('change', function() {
+            checkOut.min = checkIn.value;
+            if (checkOut.value && checkOut.value < checkIn.value) {
+                checkOut.value = checkIn.value;
+            }
+        });
     });
 });

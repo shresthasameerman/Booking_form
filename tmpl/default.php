@@ -2,28 +2,30 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
-// Load jQuery and Bootstrap if needed
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('bootstrap.framework');
+
+$moduleId = $module->id;
 ?>
 
 <div class="whiteleaf-booking-module">
     <h3>Book Your Stay at White Leaf Resort</h3>
-    <form action="index.php" method="post" id="bookingForm" class="d-flex flex-wrap align-items-center gap-2">
+    <form action="<?php echo Uri::current(); ?>" method="post" id="bookingForm<?php echo $moduleId; ?>" class="d-flex flex-wrap align-items-center gap-2">
         <div class="form-group">
-            <label for="check_in" class="form-label">Check-in</label>
-            <input type="date" id="check_in" name="check_in" class="form-control form-control-sm" required>
+            <label for="check_in_<?php echo $moduleId; ?>" class="form-label">Check-in</label>
+            <input type="date" id="check_in_<?php echo $moduleId; ?>" name="check_in" class="form-control form-control-sm" required>
         </div>
         
         <div class="form-group">
-            <label for="check_out" class="form-label">Check-out</label>
-            <input type="date" id="check_out" name="check_out" class="form-control form-control-sm" required>
+            <label for="check_out_<?php echo $moduleId; ?>" class="form-label">Check-out</label>
+            <input type="date" id="check_out_<?php echo $moduleId; ?>" name="check_out" class="form-control form-control-sm" required>
         </div>
         
         <div class="form-group">
-            <label for="room_type" class="form-label">Room Type</label>
-            <select id="room_type" name="room_type" class="form-control form-control-sm" required>
+            <label for="room_type_<?php echo $moduleId; ?>" class="form-label">Room Type</label>
+            <select id="room_type_<?php echo $moduleId; ?>" name="room_type" class="form-control form-control-sm" required>
                 <option value="">Select Room</option>
                 <?php if (!empty($rooms)): ?>
                     <?php foreach ($rooms as $room): ?>
@@ -39,8 +41,8 @@ HTMLHelper::_('bootstrap.framework');
         </div>
         
         <div class="form-group">
-            <label for="guests" class="form-label">Guests</label>
-            <select id="guests" name="guests" class="form-control form-control-sm" required>
+            <label for="guests_<?php echo $moduleId; ?>" class="form-label">Guests</label>
+            <select id="guests_<?php echo $moduleId; ?>" name="guests" class="form-control form-control-sm" required>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -49,21 +51,21 @@ HTMLHelper::_('bootstrap.framework');
         </div>
         
         <div class="form-group">
-            <label for="guest_name" class="form-label">Name</label>
-            <input type="text" id="guest_name" name="guest_name" class="form-control form-control-sm" required>
+            <label for="guest_name_<?php echo $moduleId; ?>" class="form-label">Name</label>
+            <input type="text" id="guest_name_<?php echo $moduleId; ?>" name="guest_name" class="form-control form-control-sm" required>
         </div>
         
         <div class="form-group">
-            <label for="guest_email" class="form-label">Email</label>
-            <input type="email" id="guest_email" name="guest_email" class="form-control form-control-sm" required>
+            <label for="guest_email_<?php echo $moduleId; ?>" class="form-label">Email</label>
+            <input type="email" id="guest_email_<?php echo $moduleId; ?>" name="guest_email" class="form-control form-control-sm" required>
         </div>
         
         <div class="form-group d-flex align-items-end">
-            <button type="submit" class="btn btn-primary btn-sm">Check Availability</button>
+            <button type="submit" class="btn btn-primary btn-sm">Book Now</button>
         </div>
         
-        <input type="hidden" name="option" value="com_whiteleafbooking">
-        <input type="hidden" name="task" value="booking.checkAvailability">
+        <input type="hidden" name="task" value="submitBooking">
+        <input type="hidden" name="module_id" value="<?php echo $moduleId; ?>">
         <?php echo HTMLHelper::_('form.token'); ?>
     </form>
 </div>

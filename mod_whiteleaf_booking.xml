@@ -4,25 +4,28 @@
     <author>shresthasameerman</author>
     <version>1.0.0</version>
     <description>Room booking module for White Leaf Resort</description>
+    
     <files>
         <filename module="mod_whiteleaf_booking">mod_whiteleaf_booking.php</filename>
         <filename>helper.php</filename>
-        <filename>controller.php</filename>
         <folder>tmpl</folder>
         <folder>css</folder>
         <folder>js</folder>
         <folder>sql</folder>
     </files>
+    
     <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
         </sql>
     </install>
+    
     <uninstall>
         <sql>
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+    
     <config>
         <fields name="params">
             <fieldset name="basic">
