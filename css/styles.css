@@ -1,0 +1,65 @@
+.whiteleaf-booking-module {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.whiteleaf-booking-module h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.whiteleaf-booking-module form {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.whiteleaf-booking-module .form-group {
+    margin-bottom: 0;
+    min-width: 150px;
+    position: relative;
+}
+
+.whiteleaf-booking-module .form-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.whiteleaf-booking-module .form-control-sm {
+    width: 150px;
+    height: 35px;
+    font-size: 0.875rem;
+}
+
+.whiteleaf-booking-module select.form-control-sm {
+    padding-right: 25px;
+}
+
+.whiteleaf-booking-module .btn-primary {
+    height: 35px;
+    padding: 0 20px;
+    font-size: 0.875rem;
+    margin-top: 21px; /* Aligns with other inputs considering their labels */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .whiteleaf-booking-module .form-group {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .whiteleaf-booking-module .form-control-sm {
+        width: 100%;
+    }
+    
+    .whiteleaf-booking-module .btn-primary {
+        width: 100%;
+        margin-top: 0;
+    }
+}
