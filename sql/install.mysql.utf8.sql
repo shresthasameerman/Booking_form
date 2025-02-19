@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `#__whiteleaf_bookings` (
     `check_out` date NOT NULL,
     `guest_name` varchar(255) NOT NULL,
     `guest_email` varchar(255) NOT NULL,
-    `guest_phone` varchar(50),
+    `guest_phone` varchar(50) NOT NULL,
     `num_adults` int(11) NOT NULL DEFAULT 1,
     `num_children` int(11) NOT NULL DEFAULT 0,
     `special_requests` text,

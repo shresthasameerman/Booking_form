@@ -32,13 +32,15 @@ class ModWhiteleafBookingHelper
             'room_type' => 'int',
             'guests' => 'int',
             'guest_name' => 'string',
-            'guest_email' => 'string'
+            'guest_email' => 'string',
+            'guest_phone' => 'string'
         ]);
 
         // Validate data
         if (empty($data['check_in']) || empty($data['check_out']) || 
             empty($data['room_type']) || empty($data['guests']) || 
-            empty($data['guest_name']) || empty($data['guest_email'])) {
+            empty($data['guest_name']) || empty($data['guest_email']) || 
+            empty($data['guest_phone'])) {
             Factory::getApplication()->enqueueMessage('All fields are required', 'error');
             return ['success' => false];
         }
@@ -76,6 +78,7 @@ class ModWhiteleafBookingHelper
                 'check_out' => $data['check_out'],
                 'guest_name' => $data['guest_name'],
                 'guest_email' => $data['guest_email'],
+                'guest_phone' => $data['guest_phone'],
                 'num_adults' => $data['guests'],
                 'total_price' => $totalPrice,
                 'booking_status' => 'confirmed',

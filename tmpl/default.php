@@ -60,6 +60,11 @@ $moduleId = $module->id;
             <input type="email" id="guest_email_<?php echo $moduleId; ?>" name="guest_email" class="form-control form-control-sm" required>
         </div>
         
+        <div class="form-group">
+            <label for="guest_phone_<?php echo $moduleId; ?>" class="form-label">Phone</label>
+            <input type="tel" id="guest_phone_<?php echo $moduleId; ?>" name="guest_phone" class="form-control form-control-sm" placeholder="+1 123 456 7890" required>
+        </div>
+        
         <div class="form-group d-flex align-items-end">
             <button type="submit" class="btn btn-primary btn-sm">Book Now</button>
         </div>

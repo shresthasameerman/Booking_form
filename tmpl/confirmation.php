@@ -43,6 +43,10 @@ $nights = $bookingData['nights'];
                     <td><?php echo $booking->num_adults; ?></td>
                 </tr>
                 <tr>
+                    <th>Phone:</th>
+                    <td><?php echo htmlspecialchars($booking->guest_phone, ENT_QUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
                     <th>Total Price:</th>
                     <td>$<?php echo number_format($booking->total_price, 2); ?></td>
                 </tr>
