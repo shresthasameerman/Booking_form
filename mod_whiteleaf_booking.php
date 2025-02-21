@@ -20,6 +20,18 @@ $task = $input->getString('task', '');
 $bookingData = null;
 
 if ($task === 'submitBooking' && Session::checkToken()) {
+    $bookingData = $input->getArray([
+        'check_in' => 'string',
+        'check_out' => 'string',
+        'room_type' => 'int',
+        'guests' => 'int',
+        'guest_name' => 'string',
+        'guest_email' => 'string',
+        'guest_phone' => 'string'
+    ]);
+    require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'special_request');
+    return;
+} elseif ($task === 'confirmBooking' && Session::checkToken()) {
     $result = $booking->processBooking($input);
     if ($result['success']) {
         $bookingData = $result['data'];

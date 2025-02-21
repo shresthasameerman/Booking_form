@@ -33,7 +33,8 @@ class ModWhiteleafBookingHelper
             'guests' => 'int',
             'guest_name' => 'string',
             'guest_email' => 'string',
-            'guest_phone' => 'string'
+            'guest_phone' => 'string',
+            'special_requests' => 'string'
         ]);
 
         // Validate data
@@ -80,6 +81,7 @@ class ModWhiteleafBookingHelper
                 'guest_email' => $data['guest_email'],
                 'guest_phone' => $data['guest_phone'],
                 'num_adults' => $data['guests'],
+                'special_requests' => $data['special_requests'],
                 'total_price' => $totalPrice,
                 'booking_status' => 'confirmed',
                 'payment_status' => 'pending',
