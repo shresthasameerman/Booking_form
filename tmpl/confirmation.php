@@ -56,6 +56,7 @@ $nights = $bookingData['nights'];
         <div class="booking-notes mt-4">
             <p>A confirmation email has been sent to <?php echo htmlspecialchars($booking->guest_email, ENT_QUOTES, 'UTF-8'); ?>.</p>
             <p>Please keep your booking number for future reference.</p>
+            <p><strong> We Will reach Out to you in 24 Hrs of Booking </strong></p>
         </div>
         
         <div class="return-home mt-4">
