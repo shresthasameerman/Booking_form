@@ -57,5 +57,27 @@ $nights = $bookingData['nights'];
             <p>A confirmation email has been sent to <?php echo htmlspecialchars($booking->guest_email, ENT_QUOTES, 'UTF-8'); ?>.</p>
             <p>Please keep your booking number for future reference.</p>
         </div>
+        
+        <div class="return-home mt-4">
+            <a href="<?php echo JUri::base(); ?>" class="btn btn-custom">Return to Home Page</a>
+        </div>
     </div>
 </div>
+
+<style>
+.btn-custom {
+    background-color: #2e8b57;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-custom:hover {
+    background-color: #266f46;
+    color: white;
+    text-decoration: none;
+}
+</style>
