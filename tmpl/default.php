@@ -11,7 +11,7 @@ $moduleId = $module->id;
 ?>
 
 <div class="whiteleaf-booking-module">
-    <h3>Book Your Stay at White Leaf Resort</h3>
+    <h3>Book Now</h3>
     <form action="<?php echo Uri::current(); ?>" method="post" id="bookingForm<?php echo $moduleId; ?>" class="d-flex flex-wrap align-items-center gap-2">
         <div class="form-group">
             <label for="check_in_<?php echo $moduleId; ?>" class="form-label">Check-in</label>
