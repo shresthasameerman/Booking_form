@@ -63,3 +63,21 @@
         margin-top: 0;
     }
 }
+.booking-notes {
+    color: #2e8b57;
+}
+.btn-custom {
+    background-color: #2e8b57;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-custom:hover {
+    background-color: #266f46;
+    color: white;
+    text-decoration: none;
+}

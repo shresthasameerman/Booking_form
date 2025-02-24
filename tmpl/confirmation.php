@@ -54,7 +54,7 @@ $nights = $bookingData['nights'];
         </div>
         
         <div class="booking-notes mt-4">
-            <p>A confirmation email has been sent to <?php echo htmlspecialchars($booking->guest_email, ENT_QUOTES, 'UTF-8'); ?>.</p>
+            <p>A confirmation email will sent to <?php echo htmlspecialchars($booking->guest_email, ENT_QUOTES, 'UTF-8'); ?>.</p>
             <p>Please keep your booking number for future reference.</p>
             <p><strong> We Will reach Out to you in 24 Hrs of Booking </strong></p>
         </div>
@@ -65,20 +65,3 @@ $nights = $bookingData['nights'];
     </div>
 </div>
 
-<style>
-.btn-custom {
-    background-color: #2e8b57;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.btn-custom:hover {
-    background-color: #266f46;
-    color: white;
-    text-decoration: none;
-}
-</style>
