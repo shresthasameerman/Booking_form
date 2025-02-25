@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `#__whiteleaf_rooms` (
 INSERT INTO `#__whiteleaf_rooms` (`title`, `description`, `price`, `capacity`, `published`) VALUES
 ('Standard Room', 'Comfortable room with basic amenities', 100.00, 2, 1),
 ('Deluxe Room', 'Spacious room with premium amenities', 150.00, 2, 1),
-('Suite', 'Luxury suite with separate living area', 250.00, 4, 1),
-('Family Room', 'Large room ideal for families', 200.00, 4, 1);
+('Semi-Deluxe', 'Luxury suite with separate living area', 250.00, 4, 1),
+('Deluxe ', 'Large room ideal for families', 200.00, 4, 1);
 
 -- Table for room availability
 CREATE TABLE IF NOT EXISTS `#__whiteleaf_room_availability` (
@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS `#__whiteleaf_bookings` (
     `guest_phone` varchar(50) NOT NULL,
     `num_adults` int(11) NOT NULL DEFAULT 1,
     `num_children` int(11) NOT NULL DEFAULT 0,
+    `children_ages` JSON DEFAULT NULL,  -- New column for storing children's ages as JSON array
+    `num_rooms` int(11) NOT NULL DEFAULT 1,
     `special_requests` text,
     `total_price` decimal(10,2) NOT NULL,
     `payment_status` enum('pending','paid','cancelled','refunded') NOT NULL DEFAULT 'pending',

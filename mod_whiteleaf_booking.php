@@ -19,31 +19,58 @@ $input = Factory::getApplication()->input;
 $task = $input->getString('task', '');
 $bookingData = null;
 
+// Debug current request
+error_log('WhiteLeaf Booking Module - Task: ' . $task);
+
 if ($task === 'submitBooking' && Session::checkToken()) {
     $bookingData = $input->getArray([
         'check_in' => 'string',
         'check_out' => 'string',
-        'room_type' => 'int',
         'guests' => 'int',
-        'guest_name' => 'string',
-        'guest_email' => 'string',
-        'guest_phone' => 'string'
+        'num_children' => 'int',
+        'children_ages' => 'array'
     ]);
+    error_log('Submit Booking Data: ' . print_r($bookingData, true));
+    require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'room_details');
+    return;
+    
+} elseif ($task === 'specialRequest' && Session::checkToken()) {
+    $bookingData = $input->getArray([
+        'check_in' => 'string',
+        'check_out' => 'string',
+        'room_quantity' => 'array',
+        'guests' => 'int',
+        'num_children' => 'int',
+        'children_ages' => 'array'
+    ]);
+    error_log('Special Request Data: ' . print_r($bookingData, true));
     require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'special_request');
     return;
+    
 } elseif ($task === 'confirmBooking' && Session::checkToken()) {
+    error_log('Confirm Booking - Processing request');
     $result = $booking->processBooking($input);
     if ($result['success']) {
         $bookingData = $result['data'];
+        error_log('Booking Successful: ' . print_r($bookingData, true));
         require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'confirmation');
         return;
+    } else {
+        error_log('Booking Failed');
+        // Fall through to default view
     }
 }
 
 try {
     // Get available rooms
     $rooms = $booking->getRooms();
+    if (empty($rooms)) {
+        error_log('No rooms found in the database');
+    } else {
+        error_log('Found ' . count($rooms) . ' rooms in the database');
+    }
 } catch (Exception $e) {
+    error_log('Error loading rooms data: ' . $e->getMessage());
     Factory::getApplication()->enqueueMessage('Error loading rooms data', 'error');
     $rooms = [];
 }

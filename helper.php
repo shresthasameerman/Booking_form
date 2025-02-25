@@ -29,7 +29,7 @@ class ModWhiteleafBookingHelper
         $data = $input->getArray([
             'check_in' => 'string',
             'check_out' => 'string',
-            'room_type' => 'int',
+            'room_quantity' => 'array',
             'guests' => 'int',
             'guest_name' => 'string',
             'guest_email' => 'string',
@@ -39,7 +39,7 @@ class ModWhiteleafBookingHelper
 
         // Validate data
         if (empty($data['check_in']) || empty($data['check_out']) || 
-            empty($data['room_type']) || empty($data['guests']) || 
+            empty($data['room_quantity']) || empty($data['guests']) || 
             empty($data['guest_name']) || empty($data['guest_email']) || 
             empty($data['guest_phone'])) {
             Factory::getApplication()->enqueueMessage('All fields are required', 'error');
@@ -48,39 +48,74 @@ class ModWhiteleafBookingHelper
 
         try {
             $db = Factory::getDbo();
-            
-            // Generate booking number
-            $bookingNumber = 'WL' . date('Ymd') . rand(1000, 9999);
-            
-            // Get room details
-            $query = $db->getQuery(true)
-                ->select('*')
-                ->from($db->quoteName('#__whiteleaf_rooms'))
-                ->where($db->quoteName('id') . ' = ' . $db->quote($data['room_type']));
-            
-            $db->setQuery($query);
-            $room = $db->loadObject();
-            
-            if (!$room) {
-                throw new Exception('Room not found');
-            }
 
-            // Calculate total price
+            // Generate unique booking number using timestamp
+            $timestamp = time();
+            $bookingNumber = 'WL' . date('Ymd', $timestamp) . $timestamp . rand(100, 999);
+            
+            // Calculate stay duration
             $checkIn = new Date($data['check_in']);
             $checkOut = new Date($data['check_out']);
-            $nights = floor(($checkOut->toUnix() - $checkIn->toUnix()) / (60 * 60 * 24));
-            $totalPrice = $room->price * $nights;
+            $nights = max(1, floor(($checkOut->toUnix() - $checkIn->toUnix()) / (60 * 60 * 24)));
 
-            // Insert booking
+            // Calculate total price and insert one booking record with multiple rooms
+            $totalPrice = 0;
+            $validRooms = 0;
+            $roomsBooked = [];
+            
+            // Get the room data from the database
+            $allRooms = $this->getRooms();
+            $roomsById = [];
+            foreach ($allRooms as $room) {
+                $roomsById[$room->title] = $room;
+            }
+            
+            // First, calculate the total price and validate rooms
+            foreach ($data['room_quantity'] as $roomTitle => $quantity) {
+                // Skip if quantity is zero or negative
+                if ((int)$quantity <= 0) {
+                    continue;
+                }
+                
+                // Find the room by title
+                if (!isset($roomsById[$roomTitle])) {
+                    // Skip invalid rooms instead of throwing exception
+                    Factory::getApplication()->enqueueMessage('Room "' . $roomTitle . '" not found, skipping', 'warning');
+                    continue;
+                }
+                
+                $room = $roomsById[$roomTitle];
+                $validRooms++;
+                $roomsBooked[$roomTitle] = (int)$quantity;
+
+                // Calculate total price for the room type
+                $roomTotalPrice = $room->price * $nights * (int)$quantity;
+                $totalPrice += $roomTotalPrice;
+            }
+            
+            // Check if any valid rooms were processed
+            if ($validRooms === 0) {
+                throw new Exception('No valid rooms were selected');
+            }
+            
+            // Get the first room id for the booking record
+            // (In a real-world scenario, you'd store room-booking relationships in a junction table)
+            $firstRoomTitle = array_key_first($roomsBooked);
+            $firstRoomId = $roomsById[$firstRoomTitle]->id;
+            
+            // Now create a single booking record
             $booking = (object)[
                 'booking_number' => $bookingNumber,
-                'room_id' => $data['room_type'],
+                'room_id' => $firstRoomId, // Use the first room ID (we'll store multiple rooms in a separate table ideally)
                 'check_in' => $data['check_in'],
                 'check_out' => $data['check_out'],
                 'guest_name' => $data['guest_name'],
                 'guest_email' => $data['guest_email'],
                 'guest_phone' => $data['guest_phone'],
                 'num_adults' => $data['guests'],
+                'num_children' => $input->getInt('num_children', 0),
+                'children_ages' => json_encode($input->get('children_ages', [], 'array')),
+                'num_rooms' => array_sum($roomsBooked),
                 'special_requests' => $data['special_requests'],
                 'total_price' => $totalPrice,
                 'booking_status' => 'confirmed',
@@ -88,15 +123,20 @@ class ModWhiteleafBookingHelper
                 'created' => (new Date())->toSql()
             ];
 
-            $db->insertObject('#__whiteleaf_bookings', $booking);
+            // Insert the booking
+            $result = $db->insertObject('#__whiteleaf_bookings', $booking);
+            
+            if (!$result) {
+                throw new Exception('Failed to insert booking record: ' . $db->getErrorMsg());
+            }
 
             // Return success with booking data
             return [
                 'success' => true,
                 'data' => [
-                    'booking' => $booking,
-                    'room' => $room,
-                    'nights' => $nights
+                    'booking_number' => $bookingNumber,
+                    'total_price' => $totalPrice,
+                    'rooms' => $roomsBooked
                 ]
             ];
 
