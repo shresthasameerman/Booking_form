@@ -25,14 +25,13 @@ CREATE TABLE IF NOT EXISTS `#__whiteleaf_room_availability` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `room_id` int(11) NOT NULL,
     `date` date NOT NULL,
-    `status` enum('available','booked','maintenance') NOT NULL DEFAULT 'available',
-    `price_override` decimal(10,2) DEFAULT NULL,
+    `available_rooms` int(11) NOT NULL DEFAULT 0,
+    `total_rooms` int(11) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
-    KEY `room_id` (`room_id`),
-    KEY `date` (`date`),
+    UNIQUE KEY `room_date` (`room_id`,`date`),
     CONSTRAINT `fk_room_availability_room` FOREIGN KEY (`room_id`) 
     REFERENCES `#__whiteleaf_rooms` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for bookings
 CREATE TABLE IF NOT EXISTS `#__whiteleaf_bookings` (

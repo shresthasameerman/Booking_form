@@ -68,11 +68,34 @@ $moduleId = $module->id;
     <style>
     .whiteleaf-booking-module .form-label i {
         margin-right: 5px;
-        color: #666;
+        color: #28a745; /* Bootstrap's green color */
     }
 
     .whiteleaf-booking-module .btn i {
         margin-right: 5px;
+    }
+
+    .whiteleaf-booking-module .form-label {
+        color: #28a745;
+    }
+
+    .whiteleaf-booking-module .form-control {
+        border-color: #28a745;
+    }
+
+    .whiteleaf-booking-module .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .whiteleaf-booking-module .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .whiteleaf-booking-module .btn-primary:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
     }
 
     .child-age-input {
@@ -89,6 +112,24 @@ $moduleId = $module->id;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    /* Style for Flatpickr elements */
+    .flatpickr-input {
+        border-color: #28a745 !important;
+    }
+
+    .flatpickr-day.selected, 
+    .flatpickr-day.startRange, 
+    .flatpickr-day.endRange, 
+    .flatpickr-day.selected.inRange, 
+    .flatpickr-day.startRange.inRange, 
+    .flatpickr-day.endRange.inRange, 
+    .flatpickr-day.selected:focus, 
+    .flatpickr-day.startRange:focus, 
+    .flatpickr-day.endRange:focus {
+        background: #28a745 !important;
+        border-color: #28a745 !important;
     }
     </style>
 </div>
