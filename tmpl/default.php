@@ -44,23 +44,6 @@ $moduleId = $module->id;
                    class="flatpickr-input form-control form-control-sm" readonly="readonly" required>
         </div>
         
-        <!-- Adults counter with +/- buttons -->
-        <div class="form-group">
-            <label for="guests_<?php echo $moduleId; ?>" class="form-label">
-                <i class="fas fa-user"></i> Adults
-            </label>
-            <div class="input-group">
-                <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementGuests(<?php echo $moduleId; ?>)">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <input type="number" id="guests_<?php echo $moduleId; ?>" name="guests" 
-                       class="form-control form-control-sm text-center" value="1" min="1" max="4" readonly required>
-                <button type="button" class="btn btn-outline-success btn-sm" onclick="incrementGuests(<?php echo $moduleId; ?>)">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-        </div>
-        
         <!-- Rooms counter with +/- buttons -->
         <div class="form-group">
             <label for="rooms_<?php echo $moduleId; ?>" class="form-label">
@@ -78,7 +61,24 @@ $moduleId = $module->id;
             </div>
         </div>
         
-        <!-- Replace the Children dropdown with counter buttons -->
+        <!-- Adults counter with +/- buttons -->
+        <div class="form-group">
+            <label for="guests_<?php echo $moduleId; ?>" class="form-label">
+                <i class="fas fa-user"></i> Adults
+            </label>
+            <div class="input-group">
+                <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementGuests(<?php echo $moduleId; ?>)">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <input type="number" id="guests_<?php echo $moduleId; ?>" name="guests" 
+                       class="form-control form-control-sm text-center" value="1" min="1" max="4" readonly required>
+                <button type="button" class="btn btn-outline-success btn-sm" onclick="incrementGuests(<?php echo $moduleId; ?>)">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Children counter with +/- buttons -->
         <div class="form-group">
             <label for="num_children_<?php echo $moduleId; ?>" class="form-label">
                 <i class="fas fa-child"></i> Children
