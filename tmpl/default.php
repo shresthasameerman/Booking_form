@@ -207,6 +207,17 @@ $moduleId = $module->id;
             background-color: #28a745;
             color: white;
         }
+
+        /* Add this CSS inside your existing <style> tag */
+        .whiteleaf-booking-module input[type="number"]::-webkit-inner-spin-button,
+        .whiteleaf-booking-module input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .whiteleaf-booking-module input[type="number"] {
+            -moz-appearance: textfield;
+        }
     </style>
 </div>
 
