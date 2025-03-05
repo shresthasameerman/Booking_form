@@ -236,15 +236,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkInPicker = flatpickr("#check_in_<?php echo $moduleId; ?>", {
         ...commonConfig,
         onChange: function(selectedDates) {
-            // Update check-out minimum date when check-in changes
+            // Update check-out minimum date
             checkOutPicker.set('minDate', selectedDates[0]);
+            
+            // If no check-out date is selected or if it's before the new check-in date
+            const checkOutDate = checkOutPicker.selectedDates[0];
+            if (!checkOutDate || checkOutDate <= selectedDates[0]) {
+                // Open the check-out picker automatically
+                setTimeout(() => {
+                    checkOutPicker.open();
+                }, 100);
+            }
         }
     });
 
     // Initialize check-out date picker
     const checkOutPicker = flatpickr("#check_out_<?php echo $moduleId; ?>", {
         ...commonConfig,
-        minDate: "today"
+        minDate: "today",
+        onOpen: function() {
+            // When opening check-out picker, ensure minimum date is set to check-in date if selected
+            const checkInDate = checkInPicker.selectedDates[0];
+            if (checkInDate) {
+                this.set('minDate', checkInDate);
+            }
+        }
     });
 
     // Children ages functionality
