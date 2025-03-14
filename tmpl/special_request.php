@@ -14,7 +14,7 @@ $maxLength = 500; // Define maximum character length for special requests
 ?>
 
 <div class="whiteleaf-booking-module">
-    <h3><?php echo Text::_('SPECIAL REQUESTS'); ?></h3>
+    <h3><?php echo Text::_('Please Fill Up The Form'); ?></h3>
     
     <form action="<?php echo Uri::current(); ?>" method="post" 
           id="specialRequestForm<?php echo $moduleId; ?>" 
@@ -40,7 +40,7 @@ $maxLength = 500; // Define maximum character length for special requests
         
         <div class="form-group mb-3">
             <label for="special_requests_<?php echo $moduleId; ?>" class="form-label">
-                <?php echo Text::_('MOD_WHITELEAF_BOOKING_SPECIAL_REQUESTS_LABEL'); ?>
+                <?php echo Text::_('Any Special Request'); ?>
                 <small class="text-muted">(<?php echo Text::_('OPTIONAL'); ?>)</small>
             </label>
             <textarea id="special_requests_<?php echo $moduleId; ?>" 
