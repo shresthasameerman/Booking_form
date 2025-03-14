@@ -1,5 +1,9 @@
 -- /modules/mod_whiteleaf_booking/sql/install.mysql.utf8.sql
 
+-- Drop tables if they exist (in correct order)
+DROP TABLE IF EXISTS `#__whiteleaf_booking_children`;
+DROP TABLE IF EXISTS `#__whiteleaf_booking_reservations`;
+
 -- Table for rooms
 CREATE TABLE IF NOT EXISTS `#__whiteleaf_rooms` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -63,4 +67,29 @@ CREATE TABLE IF NOT EXISTS `#__whiteleaf_bookings` (
     KEY `room_id` (`room_id`),
     CONSTRAINT `fk_bookings_room` FOREIGN KEY (`room_id`) 
     REFERENCES `#__whiteleaf_rooms` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+-- Create reservations table
+CREATE TABLE IF NOT EXISTS `#__whiteleaf_booking_reservations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `check_in` date NOT NULL,
+  `check_out` date NOT NULL,
+  `rooms` int(11) NOT NULL,
+  `adults` int(11) NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_created_by` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+-- Create children table with proper foreign key
+CREATE TABLE IF NOT EXISTS `#__whiteleaf_booking_children` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reservation_id` int(11) NOT NULL,
+  `age` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_reservation` (`reservation_id`),
+  CONSTRAINT `fk_reservation_children` FOREIGN KEY (`reservation_id`) 
+  REFERENCES `#__whiteleaf_booking_reservations` (`id`) 
+  ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
