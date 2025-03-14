@@ -17,6 +17,8 @@ $doc->addStyleSheet('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.c
 $doc->addScript('https://cdn.jsdelivr.net/npm/flatpickr');
 // Add Font Awesome icons
 $doc->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+// Add Bootstrap tooltip
+$doc->addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js');
 
 // Get unique module ID for multiple instances
 $moduleId = $module->id;
@@ -61,10 +63,14 @@ $moduleId = $module->id;
             </div>
         </div>
         
-        <!-- Adults counter with +/- buttons -->
+        <!-- Adults counter with +/- buttons and info icon -->
         <div class="form-group">
             <label for="guests_<?php echo $moduleId; ?>" class="form-label">
                 <i class="fas fa-user"></i> Adults
+                <i class="fas fa-info-circle text-primary info-icon" 
+                   data-bs-toggle="tooltip" 
+                   data-bs-placement="top" 
+                   title="Maximum 4 guests per room"></i>
             </label>
             <div class="input-group">
                 <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementGuests(<?php echo $moduleId; ?>)">
@@ -127,6 +133,14 @@ $moduleId = $module->id;
 
         .whiteleaf-booking-module .btn i {
             margin-right: 5px;
+        }
+
+        /* Info icon styling */
+        .whiteleaf-booking-module .info-icon {
+            color: #17a2b8 !important;
+            font-size: 0.85em;
+            cursor: pointer;
+            margin-left: 5px;
         }
 
         /* Form element styling */
@@ -218,12 +232,32 @@ $moduleId = $module->id;
         .whiteleaf-booking-module input[type="number"] {
             -moz-appearance: textfield;
         }
+
+        /* Tooltip styling */
+        .tooltip {
+            font-size: 0.85em;
+        }
+        
+        .tooltip-inner {
+            background-color: #28a745;
+            max-width: 200px;
+        }
+        
+        .bs-tooltip-top .tooltip-arrow::before {
+            border-top-color: #28a745;
+        }
     </style>
 </div>
 
 <!-- JavaScript functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
     // Flatpickr date picker configuration
     const commonConfig = {
         enableTime: false,        // Disable time selection
@@ -291,34 +325,82 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Adults counter functions
+    const MAX_GUESTS_PER_ROOM = 4; // Adjust this value as needed
+
+    // Updated Adults counter functions
     window.incrementGuests = function(moduleId) {
         const guestsInput = document.getElementById('guests_' + moduleId);
-        const currentValue = parseInt(guestsInput.value);
-        guestsInput.value = currentValue + 1;
+        const roomsInput = document.getElementById('rooms_' + moduleId);
+        const currentGuests = parseInt(guestsInput.value);
+        const newGuestCount = currentGuests + 1;
+        
+        // Calculate required rooms
+        const requiredRooms = Math.ceil(newGuestCount / MAX_GUESTS_PER_ROOM);
+        
+        // Update rooms if necessary
+        if (requiredRooms > parseInt(roomsInput.value)) {
+            if (requiredRooms <= parseInt(roomsInput.max)) {
+                roomsInput.value = requiredRooms;
+            } else {
+                // If max rooms reached, limit guests
+                return;
+            }
+        }
+        
+        guestsInput.value = newGuestCount;
     }
 
     window.decrementGuests = function(moduleId) {
         const guestsInput = document.getElementById('guests_' + moduleId);
-        const currentValue = parseInt(guestsInput.value);
-        if (currentValue > parseInt(guestsInput.min)) {
-            guestsInput.value = currentValue - 1;
+        const roomsInput = document.getElementById('rooms_' + moduleId);
+        const currentGuests = parseInt(guestsInput.value);
+        
+        if (currentGuests > parseInt(guestsInput.min)) {
+            const newGuestCount = currentGuests - 1;
+            guestsInput.value = newGuestCount;
+            
+            // Calculate required rooms
+            const requiredRooms = Math.ceil(newGuestCount / MAX_GUESTS_PER_ROOM);
+            
+            // Update rooms if possible
+            if (requiredRooms < parseInt(roomsInput.value)) {
+                roomsInput.value = Math.max(requiredRooms, parseInt(roomsInput.min));
+            }
         }
     }
 
     // Rooms counter functions
     window.incrementRooms = function(moduleId) {
         const roomsInput = document.getElementById('rooms_' + moduleId);
+        const guestsInput = document.getElementById('guests_' + moduleId);
         const currentValue = parseInt(roomsInput.value);
+        
         if (currentValue < parseInt(roomsInput.max)) {
             roomsInput.value = currentValue + 1;
+            // Calculate max possible guests with new room count
+            const maxGuests = parseInt(roomsInput.value) * MAX_GUESTS_PER_ROOM;
+            // Update max attribute on guests input
+            guestsInput.setAttribute('max', maxGuests);
         }
     }
 
     window.decrementRooms = function(moduleId) {
         const roomsInput = document.getElementById('rooms_' + moduleId);
+        const guestsInput = document.getElementById('guests_' + moduleId);
         const currentValue = parseInt(roomsInput.value);
+        
         if (currentValue > parseInt(roomsInput.min)) {
-            roomsInput.value = currentValue - 1;
+            const newRoomCount = currentValue - 1;
+            const maxGuests = newRoomCount * MAX_GUESTS_PER_ROOM;
+            
+            // Check if current guest count exceeds new max
+            if (parseInt(guestsInput.value) > maxGuests) {
+                guestsInput.value = maxGuests;
+            }
+            
+            roomsInput.value = newRoomCount;
+            // Update max attribute on guests input
+            guestsInput.setAttribute('max', maxGuests);
         }
     }
 

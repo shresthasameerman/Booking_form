@@ -102,3 +102,43 @@
     color: white;
     text-decoration: none;
 }
+
+.booking-confirmation {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.booking-confirmation h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.booking-confirmation h3 {
+    color: #666;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 20px;
+}
+
+.booking-details,
+.guest-details,
+.stay-details,
+.guest-count,
+.special-requests,
+.payment-details {
+    margin-bottom: 30px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.booking-confirmation p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.booking-confirmation strong {
+    color: #333;
+}
