@@ -71,7 +71,7 @@ $moduleId = $module->id;
                     <i class="fas fa-minus"></i>
                 </button>
                 <input type="number" id="guests_<?php echo $moduleId; ?>" name="guests" 
-                       class="form-control form-control-sm text-center" value="1" min="1" max="4" readonly required>
+                       class="form-control form-control-sm text-center" value="1" min="1" readonly required>
                 <button type="button" class="btn btn-outline-success btn-sm" onclick="incrementGuests(<?php echo $moduleId; ?>)">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -294,9 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.incrementGuests = function(moduleId) {
         const guestsInput = document.getElementById('guests_' + moduleId);
         const currentValue = parseInt(guestsInput.value);
-        if (currentValue < parseInt(guestsInput.max)) {
-            guestsInput.value = currentValue + 1;
-        }
+        guestsInput.value = currentValue + 1;
     }
 
     window.decrementGuests = function(moduleId) {
