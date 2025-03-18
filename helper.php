@@ -34,6 +34,14 @@ class ModWhiteleafBookingHelper
             'guest_name' => 'string',
             'guest_email' => 'string',
             'guest_phone' => 'string',
+            'address_street' => 'string',
+            'address_city' => 'string',
+            'address_state' => 'string',
+            'address_postcode' => 'string',
+            'address_country' => 'string',
+            'address_apt' => 'string',
+            'address_district' => 'string',
+            'address_type' => 'string',
             'special_requests' => 'string'
         ]);
 
@@ -41,8 +49,10 @@ class ModWhiteleafBookingHelper
         if (empty($data['check_in']) || empty($data['check_out']) || 
             empty($data['room_quantity']) || empty($data['guests']) || 
             empty($data['guest_name']) || empty($data['guest_email']) || 
-            empty($data['guest_phone'])) {
-            Factory::getApplication()->enqueueMessage('All fields are required', 'error');
+            empty($data['guest_phone']) || empty($data['address_street']) ||
+            empty($data['address_city']) || empty($data['address_state']) ||
+            empty($data['address_postcode']) || empty($data['address_country'])) {
+            Factory::getApplication()->enqueueMessage('All required fields must be filled', 'error');
             return ['success' => false];
         }
 
@@ -112,6 +122,14 @@ class ModWhiteleafBookingHelper
                 'guest_name' => $data['guest_name'],
                 'guest_email' => $data['guest_email'],
                 'guest_phone' => $data['guest_phone'],
+                'address_street' => $data['address_street'],
+                'address_city' => $data['address_city'],
+                'address_state' => $data['address_state'],
+                'address_postcode' => $data['address_postcode'],
+                'address_country' => $data['address_country'],
+                'address_apt' => $data['address_apt'] ?? null,
+                'address_district' => $data['address_district'] ?? null,
+                'address_type' => $data['address_type'] ?? 'home',
                 'num_adults' => $data['guests'],
                 'num_children' => $input->getInt('num_children', 0),
                 'children_ages' => json_encode($input->get('children_ages', [], 'array')),

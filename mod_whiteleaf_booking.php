@@ -31,6 +31,13 @@ if ($task === 'submitBooking' && Session::checkToken()) {
         'children_ages' => 'array'
     ]);
     error_log('Submit Booking Data: ' . print_r($bookingData, true));
+    
+    // Navigation links
+    echo '<a href="' . JRoute::_('index.php?view=room_details') . '">Room Details</a>';
+    echo '<a href="' . JRoute::_('index.php?view=special_request') . '">Special Request</a>';
+    echo '<a href="' . JRoute::_('index.php?view=confirmation') . '">Confirmation</a>';
+    
+    // Load room_details.php from the template override folder
     require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'room_details');
     return;
     
@@ -44,6 +51,13 @@ if ($task === 'submitBooking' && Session::checkToken()) {
         'children_ages' => 'array'
     ]);
     error_log('Special Request Data: ' . print_r($bookingData, true));
+    
+    // Navigation links
+    echo '<a href="' . JRoute::_('index.php?view=room_details') . '">Room Details</a>';
+    echo '<a href="' . JRoute::_('index.php?view=special_request') . '">Special Request</a>';
+    echo '<a href="' . JRoute::_('index.php?view=confirmation') . '">Confirmation</a>';
+    
+    // Load special_request.php from the template override folder
     require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'special_request');
     return;
     
@@ -53,6 +67,13 @@ if ($task === 'submitBooking' && Session::checkToken()) {
     if ($result['success']) {
         $bookingData = $result['data'];
         error_log('Booking Successful: ' . print_r($bookingData, true));
+        
+        // Navigation links
+        echo '<a href="' . JRoute::_('index.php?view=room_details') . '">Room Details</a>';
+        echo '<a href="' . JRoute::_('index.php?view=special_request') . '">Special Request</a>';
+        echo '<a href="' . JRoute::_('index.php?view=confirmation') . '">Confirmation</a>';
+        
+        // Load confirmation.php from the template override folder
         require ModuleHelper::getLayoutPath('mod_whiteleaf_booking', 'confirmation');
         return;
     } else {
@@ -75,4 +96,5 @@ try {
     $rooms = [];
 }
 
+// Load the default layout from the module's tmpl folder
 require ModuleHelper::getLayoutPath('mod_whiteleaf_booking');

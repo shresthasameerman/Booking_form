@@ -5,13 +5,14 @@ defined('_JEXEC') or die;
 // Import required Joomla classes
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 // Load required frameworks
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('bootstrap.framework');
 
 // Add required external resources
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 // Add Flatpickr date picker resources
 $doc->addStyleSheet('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css');
 $doc->addScript('https://cdn.jsdelivr.net/npm/flatpickr');
@@ -47,30 +48,31 @@ $moduleId = $module->id;
         </div>
         
         <!-- Rooms counter with +/- buttons -->
-        <div class="form-group">
-            <label for="rooms_<?php echo $moduleId; ?>" class="form-label">
-                <i class="fas fa-bed"></i> Rooms
-            </label>
-            <div class="input-group">
-                <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementRooms(<?php echo $moduleId; ?>)">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <input type="number" id="rooms_<?php echo $moduleId; ?>" name="rooms" 
-                       class="form-control form-control-sm text-center" value="1" min="1" max="5" readonly required>
-                <button type="button" class="btn btn-outline-success btn-sm" onclick="incrementRooms(<?php echo $moduleId; ?>)">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-        </div>
+       <!-- Rooms counter with +/- buttons -->
+<div class="form-group">
+    <label for="rooms_<?php echo $moduleId; ?>" class="form-label">
+        <i class="fas fa-bed"></i> Rooms
+        <i class="fas fa-info-circle text-primary info-icon" 
+           data-bs-toggle="tooltip" 
+           data-bs-placement="top" 
+           title="Maximum 4 guests per room"></i>
+    </label>
+    <div class="input-group">
+        <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementRooms(<?php echo $moduleId; ?>)">
+            <i class="fas fa-minus"></i>
+        </button>
+        <input type="number" id="rooms_<?php echo $moduleId; ?>" name="rooms" 
+               class="form-control form-control-sm text-center" value="1" min="1" max="5" readonly required>
+        <button type="button" class="btn btn-outline-success btn-sm" onclick="incrementRooms(<?php echo $moduleId; ?>)">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+</div>
         
         <!-- Adults counter with +/- buttons and info icon -->
         <div class="form-group">
             <label for="guests_<?php echo $moduleId; ?>" class="form-label">
                 <i class="fas fa-user"></i> Adults
-                <i class="fas fa-info-circle text-primary info-icon" 
-                   data-bs-toggle="tooltip" 
-                   data-bs-placement="top" 
-                   title="Maximum 4 guests per room"></i>
             </label>
             <div class="input-group">
                 <button type="button" class="btn btn-outline-success btn-sm" onclick="decrementGuests(<?php echo $moduleId; ?>)">
@@ -456,6 +458,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.btn[onclick^="decrement"]').forEach(button => {
         const originalOnclick = button.getAttribute('onclick');
         button.setAttribute('onclick', `${originalOnclick}(${moduleId})`);
+    });
+
+    // Form validation before submit
+    document.getElementById('bookingForm<?php echo $moduleId; ?>').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const checkIn = document.getElementById('check_in_<?php echo $moduleId; ?>').value;
+        const checkOut = document.getElementById('check_out_<?php echo $moduleId; ?>').value;
+        const rooms = document.getElementById('rooms_<?php echo $moduleId; ?>').value;
+        const adults = document.getElementById('guests_<?php echo $moduleId; ?>').value;
+        const children = document.getElementById('num_children_<?php echo $moduleId; ?>').value;
+
+        if (!checkIn || !checkOut) {
+            alert('Please select check-in and check-out dates');
+            return;
+        }
+
+        if (new Date(checkOut) <= new Date(checkIn)) {
+            alert('Check-out date must be after check-in date');
+            return;
+        }
+
+        // If validation passes, submit the form
+        this.submit();
     });
 });
 </script>

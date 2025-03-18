@@ -63,3 +63,14 @@ KEY `room_id` (`room_id`),
 CONSTRAINT `fk_bookings_room` FOREIGN KEY (`room_id`)
 REFERENCES `#__whiteleaf_rooms` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+-- Add address columns to bookings table
+ALTER TABLE `#__whiteleaf_bookings` 
+ADD COLUMN `address_street` VARCHAR(255) NOT NULL,
+ADD COLUMN `address_city` VARCHAR(255) NOT NULL,
+ADD COLUMN `address_state` VARCHAR(255) NOT NULL,
+ADD COLUMN `address_postcode` VARCHAR(20) NOT NULL,
+ADD COLUMN `address_country` VARCHAR(255) NOT NULL,
+ADD COLUMN `address_apt` VARCHAR(50) DEFAULT NULL,
+ADD COLUMN `address_district` VARCHAR(255) DEFAULT NULL,
+ADD COLUMN `address_type` VARCHAR(20) DEFAULT 'home';

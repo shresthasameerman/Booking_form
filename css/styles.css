@@ -142,3 +142,32 @@
 .booking-confirmation strong {
     color: #333;
 }
+
+/* Address form styling */
+.whiteleaf-booking-module .address-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.whiteleaf-booking-module .address-form .form-group {
+    margin-bottom: 0;
+}
+
+.whiteleaf-booking-module .address-form .form-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.whiteleaf-booking-module .address-form .form-control-sm {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .whiteleaf-booking-module .address-form {
+        grid-template-columns: 1fr;
+    }
+}
